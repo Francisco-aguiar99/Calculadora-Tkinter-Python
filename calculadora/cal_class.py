@@ -14,3 +14,6 @@ class Calcu:
         self.label = label
         self.disolay = display
         self.buttons = buttons
+
+    def start(self):
+        self.root.mainloop()
