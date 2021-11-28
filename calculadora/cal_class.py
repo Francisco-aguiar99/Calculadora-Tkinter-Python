@@ -1,6 +1,7 @@
 import tkinter as tk
 from typing import List
 import re
+import math
 
 
 class Calcu:
@@ -29,22 +30,25 @@ class Calcu:
 
                 if button_text == '«':
                     button.bind('<Button-1>', self.clear)
+                    button.config(bg='#3A3C55', fg='#FBF5F3')
 
-                if button_text in '0123456789.+-÷*)(^':
+                if button_text in '0123456789.+-/*)(^':
                     button.bind('<Button-1>', self.add_text_to_display)
 
                 if button_text == '=':
                     button.bind('<Button-1>', self.calculate)
+                    button.config(bg='#3A3C55', fg='#FBF5F3')
 
     def _config_display(self):
-        fixed_text = self._fix_text(self.display.get())
-
+        # fixed_text = self._fix_text(self.display.get())
+        self.display.bind('<Return>', self.calculate)
+        self.display.bind('<KP_Enter>', self.calculate)
 
     def _fix_text(self, text):
         # substitui tudo que não for 0123456789./*-+^
-        text = re.sub(r'[^\d\.\÷\*\-\+\^\(\)e]', r'', text, 0)
+        text = re.sub(r'[^\d\.\/\*\-\+\^\(\)e]', r'', text, 0)
         # Substitui sinais repetidos para apenas um sinal
-        text = re.sub(r'([\.\+\÷\-\*\^])\1+', r'\1', text, 0)
+        text = re.sub(r'([\.\+\/\-\*\^])\1+', r'\1', text, 0)
         # Substitui () *() para nada
         text = re.sub(r'\*?\(\)', '', text)
         return text
@@ -59,7 +63,17 @@ class Calcu:
         fixed_text = self._fix_text(self.display.get())
         equations = self._get_equations(fixed_text)
         try:
-            ...
+            if len(equations) == 1:
+                result = eval(self._fix_text(equations[0]))
+            else:
+                result = eval(self._fix_text(equations[0]))
+                for equation in equations[1:]:
+                    result = math.pow(result, eval(self._fix_text(equation)))
+
+            self.display.delete(0, 'end')
+            self.display.insert('end', result)
+            self.label.config(text=f'Ultima conta {fixed_text} = {result}')
+
         except OverflowError:
             self.label.config(text='Não consegui realizar essa conta')
         except Exception as erro:

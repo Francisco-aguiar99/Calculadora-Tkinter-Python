@@ -5,7 +5,7 @@ from typing import List
 def style_root():
     root = tk.Tk()
     root.title('Calculadora')
-    root.config(padx=5, pady=10, background='#1C0D16')  #293241
+    root.config(padx=5, pady=10, background='#3A3C55')  #293241
     root.resizable(False, False)  # com essa chamanda a janela nao vai ser redinicionada
     # root.geometry('500x450')
     return root
@@ -41,10 +41,10 @@ def _display_control_a(evento):
 
 def make_buttons(root) -> List[List[tk.Button]]:
     button_texts: List[List[str]] = [
-        ['7', '8', '9', '=', '«'],
-        ['4', '5', '6', '-', '÷'],
+        ['7', '8', '9', '+', '«'],
+        ['4', '5', '6', '-', '/'],
         ['1', '2', '3', '*', '('],
-        ['0', '.', '^', '+', ')'],
+        ['0', '.', '^', '=', ')'],
 
     ]
 
